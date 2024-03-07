@@ -1,0 +1,36 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Valea\\Desktop\\gpc\\ConsoleApplication1\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{1F8D305E-0C70-4E0D-9A6B-0AAE7D45978B}|ConsoleApplication1.vcxproj|C:\\Users\\Valea\\Downloads\\projects assignment1\\projects assignment1\\vs2010\\l01p1stud.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "l01p1stud.cpp",
+              "DocumentMoniker": "C:\\Users\\Valea\\Downloads\\projects assignment1\\projects assignment1\\vs2010\\l01p1stud.cpp",
+              "RelativeDocumentMoniker": "..\\..\\..\\Downloads\\projects assignment1\\projects assignment1\\vs2010\\l01p1stud.cpp",
+              "ToolTip": "C:\\Users\\Valea\\Downloads\\projects assignment1\\projects assignment1\\vs2010\\l01p1stud.cpp",
+              "RelativeToolTip": "..\\..\\..\\Downloads\\projects assignment1\\projects assignment1\\vs2010\\l01p1stud.cpp",
+              "ViewState": "AQIAAJMAAAAAAAAAAAAkwJ4AAAAgAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-03-02T08:48:12.175Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

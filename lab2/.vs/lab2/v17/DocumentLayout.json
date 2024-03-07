@@ -1,0 +1,36 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Valea\\Desktop\\gpc\\lab2\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{784102B5-8226-495C-8F57-445BED01913B}|lab2.vcxproj|C:\\Users\\Valea\\Downloads\\projects assignment2\\projects assignment2\\vs2010\\t02p1.cpp||{D0E1A5C6-B359-4E41-9B60-3365922C2A22}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "t02p1.cpp",
+              "DocumentMoniker": "C:\\Users\\Valea\\Downloads\\projects assignment2\\projects assignment2\\vs2010\\t02p1.cpp",
+              "RelativeDocumentMoniker": "..\\..\\..\\Downloads\\projects assignment2\\projects assignment2\\vs2010\\t02p1.cpp",
+              "ToolTip": "C:\\Users\\Valea\\Downloads\\projects assignment2\\projects assignment2\\vs2010\\t02p1.cpp",
+              "RelativeToolTip": "..\\..\\..\\Downloads\\projects assignment2\\projects assignment2\\vs2010\\t02p1.cpp",
+              "ViewState": "AQIAABcBAAAAAAAAAAAkwCsBAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000677|",
+              "WhenOpened": "2024-03-04T13:58:23.881Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
