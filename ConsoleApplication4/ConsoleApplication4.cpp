@@ -24,7 +24,7 @@ public:
 
     void drawGrid() {
         glPushMatrix();
-        glColor3f(0.5f, 0.5f, 0.5f); // Gray color
+        glColor3f(0.0f, 0.0f, 0.0f); 
         glLineWidth(1.0f);
         glBegin(GL_LINES);
         for (int i = 0; i <= columns; ++i) {
@@ -36,20 +36,45 @@ public:
             glVertex2f(gridSize / 2.0f, j * gridSize / rows - gridSize / 2.0f);
         }
         glEnd();
+
+
+        float squareSize = 0.035f;
+        glColor3f(0.0f, 0.0f, 0.0f); 
+        glRectf(-gridSize / 2.0f - 0.3f * squareSize, -gridSize / 2.0f - 0.3f * squareSize, -gridSize / 2.0f + 0.5f * squareSize, -gridSize / 2.0f + 0.5f * squareSize);
         glPopMatrix();
+
+    }
+
+    void InitPixelSet1(int x, int y, int z, int w) {
+        pixels.push_back(make_pair(x, y - 1));
+    }
+
+    void deletePixel(int x, int y) {
+        for (auto it = pixels.begin(); it != pixels.end(); ) {
+            if (it->first == x && it->second == y) {
+                it = pixels.erase(it); 
+            }
+            else {
+                ++it; 
+            }
+        }
+    }
+
+    void InitPixelSet2(int x, int y, int z , int w) {
+        pixels.push_back(make_pair(13, 6));
+        deletePixel(10, 6);
     }
 
     void drawPixels() {
         glPushMatrix();
-        glColor3f(1.0f, 1.0f, 1.0f); // White color
+        glColor3f(0.2f, 0.2f, 0.2f); 
         for (const auto& pixel : pixels) {
-            // Check if pixel coordinates are within grid bounds
             if (pixel.first >= 0 && pixel.first <= columns && pixel.second >= 0 && pixel.second <= rows) {
                 glPushMatrix();
                 glTranslatef(pixel.first * gridSize / columns - gridSize / 2.0f,
                     pixel.second * gridSize / rows - gridSize / 2.0f,
                     0.0f);
-                glutSolidSphere(0.02f, 20, 20); // Draw a solid sphere as a pixel
+                glutSolidSphere(0.02f, 20, 20); 
                 glPopMatrix();
             }
         }
@@ -58,8 +83,8 @@ public:
 
     void drawLine(int x1, int y1, int x2, int y2) {
         glPushMatrix();
-        glColor3f(1.0f, 0.0f, 0.0f); // Red color
-        glLineWidth(3.0f); // Set line width to 3.0 units
+        glColor3f(1.0f, 0.0f, 0.0f); 
+        glLineWidth(3.0f); 
         glBegin(GL_LINES);
         glVertex2f(x1 * gridSize / columns - gridSize / 2.0f, y1 * gridSize / rows - gridSize / 2.0f);
         glVertex2f(x2 * gridSize / columns - gridSize / 2.0f, y2 * gridSize / rows - gridSize / 2.0f);
@@ -69,29 +94,28 @@ public:
 
     void drawCircle(float ox, float oy, float radius) {
         const int numSegments = 100;
-        glColor3f(1.0f, 0.0f, 0.0f); // Set color to red
+        glColor3f(1.0f, 0.0f, 0.0f);
         glLineWidth(3.0f);
         glBegin(GL_LINE_STRIP);
 
-        float startAngle = 0.0f; // Start angle at 0
-        float endAngle = 0.5f * 3.14f; // End angle at π/2
+        float startAngle = 0.0f; 
+        float endAngle = 0.5f * 3.14f; 
 
         for (int i = 0; i < numSegments; i++) {
-            float theta = startAngle + (endAngle - startAngle) * float(i) / float(numSegments); // Angle for each segment
-            float x = radius * cosf(theta); // Calculate x-coordinate
-            float y = radius * sinf(theta); // Calculate y-coordinate
+            float theta = startAngle + (endAngle - startAngle) * float(i) / float(numSegments); 
+            float x = radius * cosf(theta); 
+            float y = radius * sinf(theta); 
 
-            // Check if the segment lies within the grid boundaries
             if (x + ox >= -gridSize / 2.0f && x + ox <= gridSize / 2.0f &&
                 y + oy >= -gridSize / 2.0f && y + oy <= gridSize / 2.0f) {
-                glVertex2f(x + ox, y + oy); // Offset by center coordinates and draw vertex
+                glVertex2f(x + ox, y + oy); 
             }
         }
         glEnd();
     }
 
     void ScanConvertCircle4(int ox, int oy, int r, vector<pair<int, int>>& M) {
-        drawCircle(ox * gridSize / columns - gridSize / 2.0f, oy * gridSize / rows - gridSize / 2.0f, r * gridSize / columns); // Translate and scale coordinates
+        drawCircle(ox * gridSize / columns - gridSize / 2.0f, oy * gridSize / rows - gridSize / 2.0f, r * gridSize / columns); 
 
         int x = 0;
         int y = r;
@@ -122,8 +146,7 @@ public:
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void ScanConvertSegments3(int x0, int y0, int xn, int yn, vector<pair<int, int>>& M, float toleranceX = 2.7, float toleranceY = 1) {
-    // Check for invalid inputs (start and end points are the same)
+void ScanConvertSegments3(int x0, int y0, int xn, int yn, vector<pair<int, int>>& M, float toleranceX = 0, float toleranceY = 2) {
     if (x0 == xn && y0 == yn) {
         M.push_back(make_pair(x0, y0));
         return;
@@ -131,19 +154,15 @@ void ScanConvertSegments3(int x0, int y0, int xn, int yn, vector<pair<int, int>>
 
     int dx = xn - x0;
     int dy = yn - y0;
-
-    // Determine the maximum absolute change in x and y
     int maxDelta = max(abs(dx), abs(dy));
-
-    // Calculate scaled tolerances based on the maximum delta
     float toleranceX_scaled = toleranceX * abs(dx) / maxDelta;
     float toleranceY_scaled = toleranceY * abs(dy) / maxDelta;
 
-    int xStep = dx > 0 ? 1 : -1; // Determine the direction of movement for x
-    int yStep = dy > 0 ? 1 : -1; // Determine the direction of movement for y
+    int xStep = dx > 0 ? 1 : -1; 
+    int yStep = dy > 0 ? 1 : -1; 
 
-    dx = abs(dx); // Make sure dx is positive
-    dy = abs(dy); // Make sure dy is positive
+    dx = abs(dx);
+    dy = abs(dy); 
 
     int d = 2 * dy - dx;
     int dE = 2 * dy;
@@ -163,7 +182,6 @@ void ScanConvertSegments3(int x0, int y0, int xn, int yn, vector<pair<int, int>>
             y += yStep;
         }
 
-        // Add pixels within scaled tolerance area around the line
         for (float i = -toleranceX_scaled; i <= toleranceX_scaled; i += 0.1f) {
             for (float j = -toleranceY_scaled; j <= toleranceY_scaled; j += 0.1f) {
                 M.push_back(make_pair(round(x + i), round(y + j)));
@@ -174,49 +192,41 @@ void ScanConvertSegments3(int x0, int y0, int xn, int yn, vector<pair<int, int>>
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-CartesianGrid grid1(15, 15); // Create a Cartesian grid with 15 rows and 15 columns for the first display
-CartesianGrid grid2(15, 15); // Create a Cartesian grid with 15 rows and 15 columns for the second display
+CartesianGrid grid1(15, 15); 
+CartesianGrid grid2(15, 15); 
 
-bool displayFirst = true; // Flag to determine which display to show
+bool displayFirst = true;
 
 void Display() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
     if (displayFirst) {
-        grid1.drawGrid(); // Draw the grid for the first display
-
-        // Draw chosen pixels for the first segment in the first display
+        grid1.drawGrid(); 
         vector<pair<int, int>> chosenPixels1;
         ScanConvertSegments3(0, 0, 15, 7, chosenPixels1, 0, 0);
         for (const auto& pixel : chosenPixels1) {
             grid1.addPixel(pixel.first, pixel.second);
         }
-
-        // Draw line for the segment in the first display
         grid1.drawLine(0, 0, 15, 7);
-
-        // Draw chosen pixels for the second segment in the second display
         vector<pair<int, int>> chosenPixels2;
         ScanConvertSegments3(0, 15, 15, 10, chosenPixels2);
         for (const auto& pixel : chosenPixels2) {
             grid1.addPixel(pixel.first, pixel.second);
         }
+        grid1.InitPixelSet1(0, 15, 0, 15);
         grid1.drawPixels();
-
-        // Draw line for the segment in the second display
         grid1.drawLine(0, 15, 15, 10);
     }
     else {
 
-        grid2.drawGrid(); // Draw the grid
-
+        grid2.drawGrid();
         vector<pair<int, int>> chosenPixels2;
         grid2.ScanConvertCircle4(0, 0, 13, chosenPixels2);
-
         for (const auto& pixel : chosenPixels2) {
             grid2.addPixel(pixel.first, pixel.second);
         }
+        grid2.InitPixelSet2(0, 15, 0, 15);
         grid2.drawPixels();
 
     }
@@ -226,8 +236,8 @@ void Display() {
 
 void Keyboard(unsigned char key, int x, int y) {
     if (key == ' ') {
-        displayFirst = !displayFirst; // Toggle between the displays
-        glutPostRedisplay(); // Trigger display update
+        displayFirst = !displayFirst;
+        glutPostRedisplay(); 
     }
 }
 
@@ -236,6 +246,7 @@ int main(int argc, char** argv) {
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(600, 600);
     glutCreateWindow("Cartesian Grid");
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
 
     glutDisplayFunc(Display);
