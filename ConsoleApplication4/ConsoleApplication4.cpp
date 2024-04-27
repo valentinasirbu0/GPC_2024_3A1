@@ -115,7 +115,7 @@ public:
     }
 
     void ScanConvertCircle4(int ox, int oy, int r, vector<pair<int, int>>& M) {
-        drawCircle(ox * gridSize / columns - gridSize / 2.0f, oy * gridSize / rows - gridSize / 2.0f, r * gridSize / columns); 
+        drawCircle(ox * gridSize / columns - gridSize / 2.0f, oy * gridSize / rows - gridSize / 2.0f, r * gridSize / columns);
 
         int x = 0;
         int y = r;
@@ -143,10 +143,48 @@ public:
             M.push_back(make_pair(ox + y - 1, oy + x - 1));
         }
     }
+
 };
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-void ScanConvertSegments3(int x0, int y0, int xn, int yn, vector<pair<int, int>>& M, float toleranceX = 0, float toleranceY = 2) {
+void ScanConvertSegments32(int x0, int y0, int xn, int yn, std::vector<std::pair<int, int>>& M, float toleranceX = 0, float toleranceY = 0) {
+    if (x0 == xn && y0 == yn)
+        return;
+
+    int dx = xn - x0;
+    int dy = yn - y0;
+
+    int dxAbs = std::abs(dx);
+    int dyAbs = std::abs(dy);
+
+    int sx = x0 < xn ? 1 : -1;
+    int sy = y0 < yn ? 1 : -1;
+
+    int err = dxAbs - dyAbs;
+
+    int x = x0, y = y0;
+    M.push_back(std::make_pair(x, y));
+
+    while (x != xn || y != yn) {
+        int err2 = 2 * err;
+        if (err2 > -dyAbs) {
+            err -= dyAbs;
+            x += sx;
+        }
+        if (err2 < dxAbs) {
+            err += dxAbs;
+            y += sy;
+        }
+
+        if (std::abs(x - xn) <= toleranceX && std::abs(y - yn) <= toleranceY)
+            break;
+
+        M.push_back(std::make_pair(x, y));
+    }
+    M.push_back(std::make_pair(x0, y0));
+    M.push_back(std::make_pair(xn, yn));
+}
+void ScanConvertSegments31(int x0, int y0, int xn, int yn, vector<pair<int, int>>& M, float toleranceX = 0, float toleranceY = 2) {
     if (x0 == xn && y0 == yn) {
         M.push_back(make_pair(x0, y0));
         return;
@@ -158,11 +196,11 @@ void ScanConvertSegments3(int x0, int y0, int xn, int yn, vector<pair<int, int>>
     float toleranceX_scaled = toleranceX * abs(dx) / maxDelta;
     float toleranceY_scaled = toleranceY * abs(dy) / maxDelta;
 
-    int xStep = dx > 0 ? 1 : -1; 
-    int yStep = dy > 0 ? 1 : -1; 
+    int xStep = dx > 0 ? 1 : -1;
+    int yStep = dy > 0 ? 1 : -1;
 
     dx = abs(dx);
-    dy = abs(dy); 
+    dy = abs(dy);
 
     int d = 2 * dy - dx;
     int dE = 2 * dy;
@@ -189,7 +227,6 @@ void ScanConvertSegments3(int x0, int y0, int xn, int yn, vector<pair<int, int>>
         }
     }
 }
-
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 CartesianGrid grid1(15, 15); 
@@ -204,19 +241,26 @@ void Display() {
     if (displayFirst) {
         grid1.drawGrid(); 
         vector<pair<int, int>> chosenPixels1;
-        ScanConvertSegments3(0, 0, 15, 7, chosenPixels1, 0, 0);
+            ScanConvertSegments32(1, 13, 3, 3, chosenPixels1, 0, 0);
         for (const auto& pixel : chosenPixels1) {
             grid1.addPixel(pixel.first, pixel.second);
         }
-        grid1.drawLine(0, 0, 15, 7);
-        vector<pair<int, int>> chosenPixels2;
-        ScanConvertSegments3(0, 15, 15, 10, chosenPixels2);
+        grid1.drawLine(1, 13, 3, 3);
+        /*vector<pair<int, int>> chosenPixels2;
+        ScanConvertSegments31(0, 15, 15, 10, chosenPixels2);
         for (const auto& pixel : chosenPixels2) {
             grid1.addPixel(pixel.first, pixel.second);
         }
-        grid1.InitPixelSet1(0, 15, 0, 15);
-        grid1.drawPixels();
         grid1.drawLine(0, 15, 15, 10);
+        vector<pair<int, int>> chosenPixels2;
+        ScanConvertSegments31(0, 15, 15, 10, chosenPixels2);
+        for (const auto& pixel : chosenPixels2) {
+            grid1.addPixel(pixel.first, pixel.second);
+        }
+        grid1.drawLine(0, 15, 15, 10);
+        grid1.InitPixelSet1(0, 15, 0, 15);*/
+        grid1.drawPixels();
+        
     }
     else {
 
@@ -245,7 +289,7 @@ int main(int argc, char** argv) {
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
     glutInitWindowSize(600, 600);
-    glutCreateWindow("Cartesian Grid");
+    glutCreateWindow("Tema4");
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glEnable(GL_DEPTH_TEST);
 

@@ -1,5 +1,2 @@
 ﻿  ConsoleApplication4.cpp
-C:\Users\Valea\Desktop\gpc\ConsoleApplication4\ConsoleApplication4.cpp(47,15): error C2374: 'squareSize': redefinition; multiple initialization
-  C:\Users\Valea\Desktop\gpc\ConsoleApplication4\ConsoleApplication4.cpp(41,15):
-  see declaration of 'squareSize'
-  
+  ConsoleApplication4.vcxproj -> C:\Users\Valea\Desktop\gpc\ConsoleApplication4\Debug\ConsoleApplication4.exe
